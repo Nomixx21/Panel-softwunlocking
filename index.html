@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Softunlocking - Panel Profesional</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css?v=1">
+</head>
+
+<body>
+
+<!-- LOGIN -->
+<div id="login-screen">
+  <div class="login-card">
+    <h2>Panel SoftUnlocking</h2>
+    <input type="email" id="login-email" placeholder="Correo">
+    <input type="password" id="login-password" placeholder="Contraseña">
+    <button class="btn-main" onclick="iniciarSesion()">Entrar</button>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app" style="display:none;">
+<div class="layout">
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <h2>🛠️ Softunlocking</h2>
+  <ul>
+    <li onclick="mostrarVista('dashboard')">📊 Dashboard</li>
+    <li onclick="mostrarVista('clientes')">👥 Clientes</li>
+    <li onclick="mostrarVista('trabajos')">➕ Crear Trabajo</li>
+    <li onclick="mostrarVista('lista-trabajos')">📋 Lista de Trabajos</li>
+    <li onclick="mostrarVista('vendedores')">📈 Vendedores</li>
+    <li onclick="verSemanas()">📦 Historial</li>
+    <li onclick="cerrarSemana()">🔒 Cerrar Semana</li>
+  </ul>
+</aside>
+
+<!-- CONTENIDO -->
+<main class="content">
+<div class="container">
+
+<!-- TOPBAR -->
+<div class="topbar">
+
+  <div class="topbar-left">
+    <button class="btn-icon menu-btn" onclick="toggleMenu()">☰</button>
+    <h1>Camilo Berbesi</h1>
+  </div>
+
+  <div class="topbar-actions">
+    <button class="btn-icon" onclick="exportarDatos()">📤</button>
+    <button class="btn-icon" onclick="limpiarTodo()">🗑️</button>
+    <a href="https://wa.me/573143861121?text=Hola%20Softunlocking" target="_blank">
+      <button class="btn-icon">💬</button>
+    </a>
+  </div>
+
+</div>
+
+<!-- DASHBOARD -->
+<section id="dashboard">
+
+  <div class="stats">
+    <div class="stat-card">
+      <div class="icon">🔧</div>
+      <div>
+        <div class="stat-number" id="total-trabajos">0</div>
+        <span>Trabajos realizados</span>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="icon">💰</div>
+      <div>
+        <div class="stat-number" id="total-ganancias">$0</div>
+        <span>Ganancias</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="dashboard-grid">
+
+    <div class="card info-negocio">
+      <h3>🏪 Información de la empresa</h3>
+
+      <div class="info-item"><span>Nombre</span><strong>Revolution - Computech</strong></div>
+      <div class="info-item"><span>Ciudad</span><strong>Santiago de Cali</strong></div>
+      <div class="info-item"><span>Email</span><strong>softunlocking@gmail.com</strong></div>
+      <div class="info-item"><span>Ubicación</span><strong>Centro Comercial Pasarela / Local 155</strong></div>
+      <div class="info-item"><span>Celular</span><strong>3143861121</strong></div>
+
+    </div>
+
+    <div class="card highlight">
+      <h3>⚽ América de Cali</h3>
+      <img src="public/img/America.png" width="80">
+      <p>Pasión de un pueblo 1927</p>
+    </div>
+
+  </div>
+
+</section>
+
+<!-- CLIENTES -->
+<section id="clientes" style="display:none;">
+<div class="section">
+
+  <div class="section-header">
+    <h2>👤 Clientes</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><h3>Nuevo Cliente</h3></div>
+    <div class="card-body">
+      <input id="cliente-nombre" placeholder="Nombre">
+      <input id="cliente-telefono" placeholder="Teléfono">
+      <input id="cliente-email" placeholder="Email">
+      <button class="btn-main" onclick="agregarCliente()">Guardar</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><h3>Lista</h3></div>
+    <div class="card-body">
+      <div id="lista-clientes"></div>
+    </div>
+  </div>
+
+</div>
+</section>
+
+<!-- CREAR TRABAJO -->
+<section id="trabajos" style="display:none;">
+<div class="section">
+
+  <div class="section-header">
+    <h2>➕ Crear Trabajo</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-body">
+
+      <select id="trabajo-cliente"></select>
+      <input id="trabajo-dispositivo" placeholder="Dispositivo">
+      <input id="trabajo-problema" placeholder="Problema">
+      <input id="trabajo-valor-reparacion" type="number" placeholder="Reparación">
+      <input id="trabajo-repuesto" type="number" placeholder="Repuesto">
+      <input id="trabajo-domicilio" type="number" placeholder="Domicilio">
+
+      <select id="trabajo-vendedor">
+        <option value="">Seleccione vendedor</option>
+      </select>
+
+      <button class="btn-main" onclick="agregarTrabajo()">Crear Trabajo</button>
+
+    </div>
+  </div>
+
+</div>
+</section>
+
+<!-- LISTA TRABAJOS -->
+<section id="lista-trabajos" style="display:none;">
+<div class="section">
+
+  <div class="section-header">
+    <h2>📋 Lista de Trabajos</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-body">
+
+      <table id="tabla-trabajos" class="tabla-trabajos">
+        <thead>
+          <tr>
+            <th>Cliente</th>
+            <th>Equipo</th>
+            <th>Estado</th>
+
+            <th>Ingresos</th>
+            <th>Costos</th>
+            <th>Ganancia</th>
+
+            <th>Fecha</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+
+    </div>
+  </div>
+
+</div>
+</section>
+
+<!-- VENDEDORES -->
+<section id="vendedores" style="display:none;">
+<div class="section">
+
+  <div class="section-header">
+    <h2>📈 Vendedores</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-body">
+      <input id="nuevo-vendedor" placeholder="Nombre">
+      <button class="btn-main" onclick="crearVendedorDesdeInput()">Crear</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-body">
+      <table id="tabla-vendedores" class="tabla-trabajos">
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Total</th>
+            <th>Ganancia</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+</section>
+
+</div>
+</main>
+</div>
+</div>
+
+<!-- FIREBASE -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyDNtQ0bYteKg046kpmTlbwhnlTYDc-8vD4",
+  authDomain: "new-panel-5991a.firebaseapp.com",
+  projectId: "new-panel-5991a",
+  storageBucket: "new-panel-5991a.appspot.com",
+  messagingSenderId: "696643967623",
+  appId: "1:696643967623:web:c5476692ff13e0ab0bf622"
+};
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+const auth = firebase.auth();
+
+function mostrarVista(id){
+  document.querySelectorAll("main section").forEach(sec=>sec.style.display="none");
+  document.getElementById(id).style.display="block";
+}
+</script>
+
+<script src="js/app.js?v=1"></script>
+
+</body>
+</html>
